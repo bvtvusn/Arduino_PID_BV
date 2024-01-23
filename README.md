@@ -3,14 +3,4 @@ Library for PID controller for arduino
 
 
 **The Cauchy-Schwarz Inequality**
-$$\left( u = u0 + Kpep | {z } up
-+
-Kp
-Ti
-Z t
-0
-e dτ
-| {z } ui
-+ KpTd
-dedf
-dt | {z } ud \right)$$
+$$\left( u = u_0 + K_pe_p+\frac{K_p}{T_i}\int_{0}^{t}ed\tau +K_pT_d\frac{de_d_f}{dt} \right)$$
