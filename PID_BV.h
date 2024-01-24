@@ -13,11 +13,22 @@ class PID_BV
 		void ForwardActionController(bool mode);
 		void SetTunings(double Kp, double Ti, double Td);
 		bool Compute();
+		void SetSampleTime(int);
+		void SetAutoState(bool newAutoState);
 		double debug;
+
+
+		double GetKp();
+		double GetTi();
+		double GetTd();
+		double GetIntegral();
+		bool inAutoState();
+		bool isForwardDirection();
 
 
 	private:
 		
+		void Initialize();
 		double *myInput;              
 		double *myOutput;             
 		double *mySetpoint;           
