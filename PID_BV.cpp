@@ -25,9 +25,7 @@ void PID_BV::SetOutputLimits(double Min, double Max)
    if(inAuto)
    {
 	   if(*myOutput > outMax) *myOutput = outMax;
-	   else if(*myOutput < outMin) *myOutput = outMin;
-
-	   // For later: Check that no values in the program exceed the limits. 
+	   else if(*myOutput < outMin) *myOutput = outMin;	   
    }
 }
 
@@ -44,7 +42,13 @@ void PID_BV::SetTunings(double Kp, double Ti, double Td)
    kp = Kp; 
    ti = Ti; 
    td = Td;
-   
+}
+void PID_BV::SetSampleTime(int NewSampleTime)
+{
+   if (NewSampleTime > 0)
+   {
+      SampleTime = (unsigned long)NewSampleTime;
+   }
 }
 
 bool PID_BV::Compute()
@@ -103,3 +107,36 @@ bool PID_BV::Compute()
 	}
 	else return false;
 }
+
+void PID_BV::SetAutoState(bool newAutoState)
+{
+    if(newAutoState && !inAuto)
+    {  // Transition from manual to auto mode
+        PID_BV::Initialize();
+    }
+    inAuto = newAutoState;
+}
+void PID_BV::Initialize()
+{
+	double internalKp = kp;
+	if(!isDirect){
+		internalKp = -kp;
+	}
+	double error = *mySetpoint - *myInput;
+	double out_p = error * internalKp;
+
+	double targetOutput = *myOutput; // Want to keep the output as before as long as it is within the max/min limits.
+	if(targetOutput > outMax) targetOutput = outMax;
+    else if(targetOutput < outMin) targetOutput = outMin;
+
+	integralSum = targetOutput - out_p; // Subtracting P contribution from setpoint to get right integral value. The P part will be added back in the Compute section.
+
+    lastInput = *myInput; // Causing derivative (D) to be zero in the first iteration.   
+}
+
+double PID_BV::GetKp(){ return  kp; }
+double PID_BV::GetTi(){ return  ti;}
+double PID_BV::GetTd(){ return  td;}
+double PID_BV::GetIntegral(){ return  integralSum;}
+bool PID_BV::inAutoState(){ return  inAuto;}
+bool PID_BV::isForwardDirection(){ return isDirect;}
