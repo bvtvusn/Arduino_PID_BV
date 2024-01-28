@@ -75,30 +75,29 @@ bool PID_BV::Compute()
 			internalKp = -kp;
 		}
 	    
-		double out_p = error * internalKp;
-		integralSum += error * (internalKp / ti) * timeChange_Seconds;
+		double out_p = error * internalKp;		
+		double integralIncrement = error * (internalKp / ti) * timeChange_Seconds; // Normal integral increment
 		
-		debug = error;
 		// Antiwindup start
-		double overClip = (integralSum+out_p) - outMax;
-		double underClip = outMin-(integralSum+out_p);
-		if (overClip > 0){
-			integralSum -= overClip;
+		// If PID output = outside range: prevent change in integral sum (away from valid range).
+		if (integralIncrement > 0)
+		{
+			double maxPositiveIntegralIncrement = max(0,outMax - (out_p + integralSum));
+			integralSum += min(maxPositiveIntegralIncrement, integralIncrement); // Capping integral increment to not exeed max limit.
 		}
-		else if(underClip > 0){
-			integralSum+= underClip;
+		else
+		{
+			double maxNegativeIntegralChange =  max(0,(out_p + integralSum) - outMin) ;
+			integralSum -= min(maxNegativeIntegralChange, -integralIncrement); // Capping integral increment to not exeed min limit.
 		}
 		// Antiwindup end
-		
-		
+						
+		debug = error;
+				
 		double out_d = - internalKp * td * (input - lastInput) / timeChange_Seconds;
 		
 		double PIDsum = out_p + integralSum + out_d;
 		*myOutput = max(outMin,min(outMax, PIDsum));
-		
-		
-		//Serial.print("Output: ");
-      //Serial.println(*myOutput);
 		
 		
 	  lastInput = input;
