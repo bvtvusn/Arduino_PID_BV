@@ -1,0 +1,19 @@
+{
+  "name": "PID_BV",
+  "keywords": "PID controller, process, control",
+  "description": "A PID controller is a feedback system used in industries to maintain a desired output. It adjusts the system based on the difference between the desired and actual values using three components: Proportional (P), Integral (I), and Derivative (D). These components help reduce errors, improve stability, and minimize oscillations, ensuring efficient control of processes.",
+  "url": "",
+  "include": "PID_BV",
+  "authors":
+  [
+    {
+      "name": "Bjørn Vegard Tveraaen"
+    }
+  ],
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/bvtvusn/Arduino_PID_BV"
+  },
+  "frameworks": "arduino"
+}

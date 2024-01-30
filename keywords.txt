@@ -1,0 +1,34 @@
+#######################################
+# Syntax Coloring Map For PID_BV Library
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PID_BV	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+SetOutputLimits	KEYWORD2
+ForwardActionController	KEYWORD2
+SetTunings	KEYWORD2
+SetSampleTime	KEYWORD2
+Compute	KEYWORD2
+SetAutoState	KEYWORD2
+Initialize	KEYWORD2
+GetKp	KEYWORD2
+GetTi	KEYWORD2
+GetTd	KEYWORD2
+GetIntegral	KEYWORD2
+inAutoState	KEYWORD2
+isForwardDirection	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+true	LITERAL1
+false	LITERAL1
