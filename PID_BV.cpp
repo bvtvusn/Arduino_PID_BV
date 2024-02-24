@@ -82,22 +82,25 @@ bool PID_BV::Compute()
 		// If PID output = outside range: prevent change in integral sum (away from valid range).
 		if (integralIncrement > 0)
 		{
-			double maxPositiveIntegralIncrement = max(0,outMax - (out_p + integralSum));
-			integralSum += min(maxPositiveIntegralIncrement, integralIncrement); // Capping integral increment to not exeed max limit.
+			double maxPositiveIntegralIncrement = std::max(0.0,outMax - (out_p + integralSum));
+			integralSum += std::min(maxPositiveIntegralIncrement, integralIncrement); // Capping integral increment to not exeed max limit.
 		}
 		else
 		{
-			double maxNegativeIntegralChange =  max(0,(out_p + integralSum) - outMin) ;
-			integralSum -= min(maxNegativeIntegralChange, -integralIncrement); // Capping integral increment to not exeed min limit.
+			double maxNegativeIntegralChange =  std::max(0.0,(out_p + integralSum) - outMin) ;
+			integralSum -= std::min(maxNegativeIntegralChange, -integralIncrement); // Capping integral increment to not exeed min limit.
 		}
 		// Antiwindup end
-						
-		debug = error;
+		
 				
+		debug = error;
+		
+		
 		double out_d = - internalKp * td * (input - lastInput) / timeChange_Seconds;
 		
 		double PIDsum = out_p + integralSum + out_d;
-		*myOutput = max(outMin,min(outMax, PIDsum));
+		*myOutput = std::max(outMin,std::min(outMax, PIDsum));
+
 		
 		
 	  lastInput = input;
